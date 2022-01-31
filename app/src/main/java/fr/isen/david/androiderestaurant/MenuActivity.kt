@@ -79,7 +79,9 @@ class MenuActivity : AppCompatActivity(), CellClickListener  {
                     // Process the json
                     try {
                         var gson = Gson()
-                        // var menu_result: MenuActivity = gson.fromJson(response.toString(), MenuActivity::class.java)
+                        var dishresult = gson.fromJson(response.toString(), DishResult::class.java)
+                        displayDishes(dishresult.data.firstOrNull { it.name_fr == ss }?.items ?: listOf())
+
                         textView.text = "Response: $response"
 
                         // println("> From JSON String:\n" + menu_result)
@@ -110,7 +112,7 @@ class MenuActivity : AppCompatActivity(), CellClickListener  {
 
     }
 
-    private fun displayDishes (dishresult: List<ItemsViewModel>){
+    private fun displayDishes (dishresult: List<DishModel>){
         // getting the recyclerview by its id
         val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
 
