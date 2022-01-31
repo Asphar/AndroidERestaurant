@@ -3,9 +3,15 @@ package fr.isen.david.androiderestaurant
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.android.volley.DefaultRetryPolicy
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
 import fr.isen.david.androiderestaurant.databinding.ActivityHomeBinding
+import org.json.JSONObject
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -41,14 +47,14 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    override fun onStop() {
-        super.onStop()
-        Log.d("HomeActivity", "HomeActivity has been stopped");
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("HomeActivity", "HomeActivity has been destroyed");
-    }
+    //override fun onStop() {
+    //    super.onStop()
+    //    Log.d("HomeActivity", "HomeActivity has been stopped");
+    //}
+    //override fun onDestroy() {
+    //    super.onDestroy()
+    //    Log.d("HomeActivity", "HomeActivity has been destroyed");
+    //}
 
 
 
