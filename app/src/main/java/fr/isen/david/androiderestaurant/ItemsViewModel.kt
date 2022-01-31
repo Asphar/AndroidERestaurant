@@ -1,4 +1,6 @@
 package fr.isen.david.androiderestaurant
 
-data class ItemsViewModel(val image: Int, val text: String) {
+import java.io.Serializable
+
+data class ItemsViewModel(val image: Int, val text: String) : Serializable {
 }

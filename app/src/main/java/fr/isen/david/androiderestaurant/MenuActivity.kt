@@ -1,6 +1,7 @@
 package fr.isen.david.androiderestaurant
 
 
+import android.content.Intent
 import android.content.Intent.getIntent
 import android.os.Bundle
 import android.util.Log
@@ -15,12 +16,13 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
 import fr.isen.david.androiderestaurant.databinding.ActivityHomeBinding
 import org.json.JSONException
 import org.json.JSONObject
 
 
-class MenuActivity : AppCompatActivity() {
+class MenuActivity : AppCompatActivity(), CellClickListener  {
     // private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,18 +68,25 @@ class MenuActivity : AppCompatActivity() {
 
             // Post parameters
             // Form fields and values
-            val params = HashMap<String,String>()
+            val params = HashMap<String, String>()
             params["id_shop"] = "1"
 
             val jsonObject = JSONObject(params as Map<*, *>?)
 
             // Volley post request with parameters
-            val request = JsonObjectRequest(Request.Method.POST,url,jsonObject,
+            val request = JsonObjectRequest(Request.Method.POST, url, jsonObject,
                 { response ->
                     // Process the json
                     try {
+                        var gson = Gson()
+                        // var menu_result: MenuActivity = gson.fromJson(response.toString(), MenuActivity::class.java)
                         textView.text = "Response: $response"
-                    }catch (e:Exception){
+
+                        // println("> From JSON String:\n" + menu_result)
+
+                        // textView.text = "Response : $menu_result"
+
+                    } catch (e: Exception) {
                         textView.text = "Exception: $e"
                     }
 
@@ -97,8 +106,34 @@ class MenuActivity : AppCompatActivity() {
 
             // Add the volley post request to the request queue
             VolleySingleton.getInstance(this).addToRequestQueue(request)
-
         }
+
+    }
+
+    private fun displayDishes (dishresult: List<ItemsViewModel>){
+        // getting the recyclerview by its id
+        val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
+
+        // this creates a vertical layout Manager
+        recyclerview.layoutManager = LinearLayoutManager(this)
+
+        // ArrayList of class ItemsViewModel
+        val data = ArrayList<ItemsViewModel>()
+
+        // This will pass the ArrayList to our Adapter
+        val adapter = CustomAdapter(data)
+
+        // Setting the Adapter with the recyclerview
+        recyclerview.adapter = adapter
+
+    }
+
+
+    override fun onCellClickListener(data: DishModel) {
+        val monIntent =  Intent(this, activity_detail::class.java)
+        monIntent.putExtra("itemDish", "test")
+
+        startActivity(monIntent)
     }
 
 }
