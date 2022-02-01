@@ -14,110 +14,74 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import fr.isen.david.androiderestaurant.databinding.ActivityMenuBinding
 import org.json.JSONObject
 import org.json.JSONObject.NULL
 
-
+/*
 class MenuActivity : AppCompatActivity(), CellClickListener  {
-    // private lateinit var binding: ActivityHomeBinding
+    private lateinit var binding: ActivityMenuBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
-        // binding = ActivityHomeBinding.inflate(layoutInflater)
-        // setContentView(binding.root)
+        binding = ActivityMenuBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+*/
 
-        val ss:String = intent.getStringExtra("Button Text").toString()
-        val textView = findViewById<TextView>(R.id.textView)
+class MenuActivity : AppCompatActivity(), CellClickListener {
+
+    private lateinit var binding: ActivityMenuBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMenuBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+
+        val ss:String = intent.getStringExtra("category_type").toString()
+        val textView = findViewById<TextView>(R.id.category)
         textView.setText(ss).toString()
-        print(textView)
         val textViewValue = textView.text
 
-        Log.d("ERROR PRINT", "VAL IS: $ss")
-
-        // getting the recyclerview by its id
-        val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
 
 
-        // this creates a vertical layout Manager
-        recyclerview.layoutManager = LinearLayoutManager(this)
-
-        // ArrayList of class ItemsViewModel
-        val data = ArrayList<ItemsViewModel>()
-
-        // This loop will create 20 Views containing
-        // the image with the count of view
-        /*
-        for (i in 1..5) {
-            data.add(ItemsViewModel(R.drawable.dinner, "Item " + i))
+        var category: String? = ""
+        if (intent.hasExtra("category_type")) {
+            category = intent.getStringExtra("category_type")
         }
 
-        */
+        val textViewCategory = binding.category
+        textViewCategory.setText(category)
 
-        // Create the corresponding menu depending on the course
-        if (ss == "Appetizer menu") {
-            data.add(ItemsViewModel(R.drawable.app1, "Appetizer1"))
-            data.add(ItemsViewModel(R.drawable.dinner, "Appetizer2"))
-        }
 
-        if (ss == "Main course menu") {
-            data.add(ItemsViewModel(R.drawable.dinner, "Item " + 1))
-            data.add(ItemsViewModel(R.drawable.dinner, "Item " + 2))
-            data.add(ItemsViewModel(R.drawable.dinner, "Item " + 3))
-        }
-
-        if (ss == "Dessert menu") {
-            data.add(ItemsViewModel(R.drawable.dinner, "Item " + 1))
-            data.add(ItemsViewModel(R.drawable.dinner, "Item " + 2))
-        }
-
-        // This will pass the ArrayList to our Adapter
-        val adapter = CustomAdapter(data, this)
-
-        // Setting the Adapter with the recyclerview
-        recyclerview.adapter = adapter
-
-        // Request API request
         val btn = findViewById<Button>(R.id.button4)
         btn.setOnClickListener {
-            // val url = "https://postman-echo.com/post"
+            //http request to the API
+            val queue = Volley.newRequestQueue(this)
             val url = "http://test.api.catering.bluecodegames.com/menu"
+            val jsonObject = JSONObject()
+            jsonObject.put("id_shop", "1")
 
-            textView.text = ""
-
-            // Post parameters
-            // Form fields and values
-            val params = HashMap<String, String>()
-            params["id_shop"] = "1"
-
-            val jsonObject = JSONObject(params as Map<*, *>?)
-
-            // Volley post request with parameters
-            val request = JsonObjectRequest(Request.Method.POST, url, jsonObject,
+            // Request a string response from the provided URL.
+            val request = JsonObjectRequest(
+                Request.Method.POST, url, jsonObject,
                 { response ->
-                    // Process the json
-                    try {
-                        var gson = Gson()
-                        var dishresult = gson.fromJson(response.toString(), Model::class.java)
-                        displayDishes(dishresult.data.firstOrNull { it.name_fr == ss }?.items ?: listOf())
 
-                        textView.text = "Response: $response"
-                        Log.d("", "$response")
+                    var gson = Gson()
+                    var dishresult = gson.fromJson(response.toString(), DishResult::class.java)
+                    displayDishes(
+                        dishresult.data.firstOrNull { it.name_fr == category }?.items ?: listOf()
+                    )
 
-                        // println("> From JSON String:\n" + menu_result)
 
-                        // textView.text = "Response : $menu_result"
-
-                    } catch (e: Exception) {
-                        textView.text = "Exception: $e"
-                    }
-
+                    Log.d("", "$response")
                 }, {
                     // Error in request
-                    textView.text = "Volley error: $it"
+                    Log.i("", "Volley error: $it")
                 })
-
 
             // Volley request policy, only one time request to avoid duplicate transaction
             request.retryPolicy = DefaultRetryPolicy(
@@ -126,25 +90,21 @@ class MenuActivity : AppCompatActivity(), CellClickListener  {
                 0, // DefaultRetryPolicy.DEFAULT_MAX_RETRIES = 2
                 1f // DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
             )
-
             // Add the volley post request to the request queue
-            VolleySingleton.getInstance(this).addToRequestQueue(request)
+            queue.add(request)
         }
-
     }
 
-    private fun displayDishes (dishresult: List<ItemsViewModel>){
+    private fun displayDishes (dishresult: List<DishModel>){
         // getting the recyclerview by its id
-        val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
+        val recyclerview = binding.recyclerview
 
         // this creates a vertical layout Manager
         recyclerview.layoutManager = LinearLayoutManager(this)
 
-        // ArrayList of class ItemsViewModel
-        val data = ArrayList<DishModel>()
 
         // This will pass the ArrayList to our Adapter
-        val adapter = CustomAdapter(dishresult,this)
+        val adapter = CustomAdapter(dishresult, this)
 
         // Setting the Adapter with the recyclerview
         recyclerview.adapter = adapter
@@ -152,12 +112,10 @@ class MenuActivity : AppCompatActivity(), CellClickListener  {
     }
 
 
-    override fun onCellClickListener(data: ItemsViewModel) {
-        val monIntent =  Intent(this, activity_detail::class.java)
-        monIntent.putExtra("itemDish", "test")
-
+    override fun onCellClickListener(data: DishModel) {
+        val monIntent : Intent =  Intent(this, activity_detail::class.java)
+        monIntent.putExtra("itemDish", data)
         startActivity(monIntent)
     }
-
-
 }
+

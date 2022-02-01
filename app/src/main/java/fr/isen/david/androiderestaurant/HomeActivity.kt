@@ -26,7 +26,7 @@ class HomeActivity : AppCompatActivity() {
         binding.button.setOnClickListener(){
             val intent = Intent(this, MenuActivity::class.java)
             Toast.makeText(this,"Choose your appetizer",Toast.LENGTH_SHORT).show()
-            intent.putExtra("Button Text", "Appetizer menu")
+            intent.putExtra("category_type", getString(R.string.entrees))
             startActivity(intent)
 
         }
@@ -34,15 +34,16 @@ class HomeActivity : AppCompatActivity() {
         binding.button2.setOnClickListener(){
             val intent = Intent(this, MenuActivity::class.java)
             Toast.makeText(this,"Choose your main course",Toast.LENGTH_SHORT).show()
-            intent.putExtra("Button Text", "Main course menu")
+            intent.putExtra("category_type", getString(R.string.plats))
             startActivity(intent)
         }
 
         binding.button3.setOnClickListener(){
             val intent = Intent(this, MenuActivity::class.java)
             Toast.makeText(this,"Choose your dessert",Toast.LENGTH_SHORT).show()
-            intent.putExtra("Button Text", "Dessert menu")
+            intent.putExtra("category_type", getString(R.string.desserts))
             startActivity(intent)
+
         }
 
     }

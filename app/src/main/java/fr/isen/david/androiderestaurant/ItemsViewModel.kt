@@ -2,8 +2,7 @@ package fr.isen.david.androiderestaurant
 
 import java.io.Serializable
 
-data class Model(val data: List<ImageSet>) : Serializable
+class ItemsViewModel  (val image: Int, val text: String, val detail: String)  : Serializable{
 
-data class ImageSet (val name_fr : String, val items: List<ItemsViewModel>) : Serializable
 
-data class ItemsViewModel(val image: Int, val text: String) : Serializable
+}
