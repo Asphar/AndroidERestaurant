@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 
 class CustomAdapter(private val mList: List<ItemsViewModel>, private val cellClickListener : CellClickListener) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
@@ -22,13 +23,20 @@ class CustomAdapter(private val mList: List<ItemsViewModel>, private val cellCli
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val ItemsViewModel = mList[position]
+        val dish = mList[position]
 
         // sets the image to the imageview from our itemHolder class
-        holder.imageView.setImageResource(ItemsViewModel.image)
+        // holder.imageView.setImageResource(dish.image)
+
+        Picasso.get()
+            .load(dish.image)
+            .error(R.drawable.coyote)
+            .into(holder.imageView)
+
 
         // sets the text to the textview from our itemHolder class
-        holder.textView.text = ItemsViewModel.text
+        // holder.textView.text = dish.text
+        holder.textView.text = dish.text
 
         val data = mList[position]
         holder.itemView.setOnClickListener {

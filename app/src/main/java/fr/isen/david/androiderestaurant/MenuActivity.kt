@@ -3,6 +3,7 @@ package fr.isen.david.androiderestaurant
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -33,26 +34,10 @@ class MenuActivity : AppCompatActivity(), CellClickListener  {
         print(textView)
         val textViewValue = textView.text
 
+        Log.d("ERROR PRINT", "VAL IS: $ss")
+
         // getting the recyclerview by its id
         val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
-
-
-        /*
-        // TEST onClickRecycler
-        recyclerview.addOnItemTouchListener(
-            RecyclerItemClickListener(context, recyclerview, object :
-                RecyclerItemClickListener.OnItemClickListener {
-                override fun onItemClick(view: View?, position: Int) {
-
-                }
-
-                override fun onLongItemClick(view: View?, position: Int) {
-
-                }
-            })
-        )
-        */
-
 
 
         // this creates a vertical layout Manager
@@ -63,8 +48,28 @@ class MenuActivity : AppCompatActivity(), CellClickListener  {
 
         // This loop will create 20 Views containing
         // the image with the count of view
+        /*
         for (i in 1..5) {
-            data.add(ItemsViewModel(R.drawable.coyote, "Item " + i))
+            data.add(ItemsViewModel(R.drawable.dinner, "Item " + i))
+        }
+
+        */
+
+        // Create the corresponding menu depending on the course
+        if (ss == "Appetizer menu") {
+            data.add(ItemsViewModel(R.drawable.app1, "Appetizer1"))
+            data.add(ItemsViewModel(R.drawable.dinner, "Appetizer2"))
+        }
+
+        if (ss == "Main course menu") {
+            data.add(ItemsViewModel(R.drawable.dinner, "Item " + 1))
+            data.add(ItemsViewModel(R.drawable.dinner, "Item " + 2))
+            data.add(ItemsViewModel(R.drawable.dinner, "Item " + 3))
+        }
+
+        if (ss == "Dessert menu") {
+            data.add(ItemsViewModel(R.drawable.dinner, "Item " + 1))
+            data.add(ItemsViewModel(R.drawable.dinner, "Item " + 2))
         }
 
         // This will pass the ArrayList to our Adapter
@@ -94,10 +99,11 @@ class MenuActivity : AppCompatActivity(), CellClickListener  {
                     // Process the json
                     try {
                         var gson = Gson()
-                        // var dishresult = gson.fromJson(response.toString(), DishResult::class.java)
-                        // displayDishes(dishresult.data.firstOrNull { it.name_fr == ss }?.items ?: listOf())
+                        var dishresult = gson.fromJson(response.toString(), Model::class.java)
+                        displayDishes(dishresult.data.firstOrNull { it.name_fr == ss }?.items ?: listOf())
 
                         textView.text = "Response: $response"
+                        Log.d("", "$response")
 
                         // println("> From JSON String:\n" + menu_result)
 
@@ -135,7 +141,7 @@ class MenuActivity : AppCompatActivity(), CellClickListener  {
         recyclerview.layoutManager = LinearLayoutManager(this)
 
         // ArrayList of class ItemsViewModel
-        val data = ArrayList<ItemsViewModel>()
+        val data = ArrayList<DishModel>()
 
         // This will pass the ArrayList to our Adapter
         val adapter = CustomAdapter(dishresult,this)
