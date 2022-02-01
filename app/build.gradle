@@ -57,4 +57,7 @@ dependencies {
     // Adding GSON library for parsing json
     implementation 'com.google.code.gson:gson:2.8.6'
 
+    // Adding picasso library for picture
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
 }

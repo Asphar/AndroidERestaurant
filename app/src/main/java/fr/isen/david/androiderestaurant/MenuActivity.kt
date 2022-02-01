@@ -2,24 +2,20 @@ package fr.isen.david.androiderestaurant
 
 
 import android.content.Intent
-import android.content.Intent.getIntent
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import fr.isen.david.androiderestaurant.databinding.ActivityHomeBinding
-import org.json.JSONException
 import org.json.JSONObject
+import org.json.JSONObject.NULL
 
 
 class MenuActivity : AppCompatActivity(), CellClickListener  {
@@ -40,6 +36,25 @@ class MenuActivity : AppCompatActivity(), CellClickListener  {
         // getting the recyclerview by its id
         val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
 
+
+        /*
+        // TEST onClickRecycler
+        recyclerview.addOnItemTouchListener(
+            RecyclerItemClickListener(context, recyclerview, object :
+                RecyclerItemClickListener.OnItemClickListener {
+                override fun onItemClick(view: View?, position: Int) {
+
+                }
+
+                override fun onLongItemClick(view: View?, position: Int) {
+
+                }
+            })
+        )
+        */
+
+
+
         // this creates a vertical layout Manager
         recyclerview.layoutManager = LinearLayoutManager(this)
 
@@ -48,12 +63,12 @@ class MenuActivity : AppCompatActivity(), CellClickListener  {
 
         // This loop will create 20 Views containing
         // the image with the count of view
-        for (i in 1..20) {
+        for (i in 1..5) {
             data.add(ItemsViewModel(R.drawable.coyote, "Item " + i))
         }
 
         // This will pass the ArrayList to our Adapter
-        val adapter = CustomAdapter(data)
+        val adapter = CustomAdapter(data, this)
 
         // Setting the Adapter with the recyclerview
         recyclerview.adapter = adapter
@@ -79,8 +94,8 @@ class MenuActivity : AppCompatActivity(), CellClickListener  {
                     // Process the json
                     try {
                         var gson = Gson()
-                        var dishresult = gson.fromJson(response.toString(), DishResult::class.java)
-                        displayDishes(dishresult.data.firstOrNull { it.name_fr == ss }?.items ?: listOf())
+                        // var dishresult = gson.fromJson(response.toString(), DishResult::class.java)
+                        // displayDishes(dishresult.data.firstOrNull { it.name_fr == ss }?.items ?: listOf())
 
                         textView.text = "Response: $response"
 
@@ -112,7 +127,7 @@ class MenuActivity : AppCompatActivity(), CellClickListener  {
 
     }
 
-    private fun displayDishes (dishresult: List<DishModel>){
+    private fun displayDishes (dishresult: List<ItemsViewModel>){
         // getting the recyclerview by its id
         val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
 
@@ -123,7 +138,7 @@ class MenuActivity : AppCompatActivity(), CellClickListener  {
         val data = ArrayList<ItemsViewModel>()
 
         // This will pass the ArrayList to our Adapter
-        val adapter = CustomAdapter(data)
+        val adapter = CustomAdapter(dishresult,this)
 
         // Setting the Adapter with the recyclerview
         recyclerview.adapter = adapter
@@ -131,13 +146,12 @@ class MenuActivity : AppCompatActivity(), CellClickListener  {
     }
 
 
-    override fun onCellClickListener(data: DishModel) {
+    override fun onCellClickListener(data: ItemsViewModel) {
         val monIntent =  Intent(this, activity_detail::class.java)
         monIntent.putExtra("itemDish", "test")
 
         startActivity(monIntent)
     }
 
+
 }
-
-

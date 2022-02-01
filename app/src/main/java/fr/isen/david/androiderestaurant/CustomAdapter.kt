@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomAdapter(private val mList: List<ItemsViewModel>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter(private val mList: List<ItemsViewModel>, private val cellClickListener : CellClickListener) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,6 +30,11 @@ class CustomAdapter(private val mList: List<ItemsViewModel>) : RecyclerView.Adap
         // sets the text to the textview from our itemHolder class
         holder.textView.text = ItemsViewModel.text
 
+        val data = mList[position]
+        holder.itemView.setOnClickListener {
+            cellClickListener.onCellClickListener(data)
+        }
+
     }
 
     // return the number of the items in the list
@@ -43,3 +48,4 @@ class CustomAdapter(private val mList: List<ItemsViewModel>) : RecyclerView.Adap
         val textView: TextView = itemView.findViewById(R.id.textView)
     }
 }
+
