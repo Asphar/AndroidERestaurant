@@ -20,31 +20,16 @@ import fr.isen.david.androiderestaurant.databinding.ActivityMenuBinding
 import org.json.JSONObject
 import org.json.JSONObject.NULL
 
-/*
-class MenuActivity : AppCompatActivity(), CellClickListener  {
-    private lateinit var binding: ActivityMenuBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_menu)
-        binding = ActivityMenuBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-*/
 
 class MenuActivity : AppCompatActivity(), CellClickListener {
 
     private lateinit var binding: ActivityMenuBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMenuBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
-
-        val ss:String = intent.getStringExtra("category_type").toString()
-        val textView = findViewById<TextView>(R.id.category)
-        textView.setText(ss).toString()
-        val textViewValue = textView.text
 
 
 
@@ -75,8 +60,6 @@ class MenuActivity : AppCompatActivity(), CellClickListener {
                     displayDishes(
                         dishresult.data.firstOrNull { it.name_fr == category }?.items ?: listOf()
                     )
-
-
                     Log.d("", "$response")
                 }, {
                     // Error in request
@@ -96,12 +79,11 @@ class MenuActivity : AppCompatActivity(), CellClickListener {
     }
 
     private fun displayDishes (dishresult: List<DishModel>){
-        // getting the recyclerview by its id
+        // Getting the recyclerview by its id
         val recyclerview = binding.recyclerview
 
-        // this creates a vertical layout Manager
+        // This creates a vertical layout Manager
         recyclerview.layoutManager = LinearLayoutManager(this)
-
 
         // This will pass the ArrayList to our Adapter
         val adapter = CustomAdapter(dishresult, this)

@@ -3,4 +3,6 @@
     <string name="entrees">Entrées</string>
     <string name="plats">Plats</string>
     <string name="desserts">Desserts</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

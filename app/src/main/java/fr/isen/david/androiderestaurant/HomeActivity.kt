@@ -48,14 +48,15 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    //override fun onStop() {
-    //    super.onStop()
-    //    Log.d("HomeActivity", "HomeActivity has been stopped");
-    //}
-    //override fun onDestroy() {
-    //    super.onDestroy()
-    //    Log.d("HomeActivity", "HomeActivity has been destroyed");
-    //}
+    override fun onStop() {
+        super.onStop()
+        Log.d("HomeActivity", "HomeActivity has been stopped");
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("HomeActivity", "HomeActivity has been destroyed");
+    }
 
 
 
