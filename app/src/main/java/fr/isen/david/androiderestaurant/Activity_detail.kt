@@ -1,20 +1,21 @@
 package fr.isen.david.androiderestaurant
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 
 
-class activity_detail : AppCompatActivity() {
+class Activity_detail : AppCompatActivity() {
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        var item: String? = ""
+        // var item: String? = ""
 
         val itemDish = intent.getSerializableExtra("itemDish") as DishModel
 

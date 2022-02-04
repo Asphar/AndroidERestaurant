@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.squareup.picasso.Picasso
 import fr.isen.david.androiderestaurant.databinding.FragmentDishPictureBinding
 
 /*
@@ -17,18 +18,23 @@ class DishPictureFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentDishPictureBinding.inflate(inflater, container, false)
-        return inflater.inflate(R.layout.fragment_dish_picture, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.getString("picture_url")?.let {
-            Picasso.get().load(it).placeholder(R.drawable.coyote).into(binding)
+
+        arguments?.getString("picture_url")?.let { pictureUrl ->
+            Picasso.get()
+                .load(pictureUrl)
+                .placeholder(R.drawable.androider)
+                .into(R.drawable.androider)
+                //.into(binding.dishPictureFrag)
         }
     }
 
     companion object {
-        fun newInstane(pictureUrl: String) =
+        fun newInstance(pictureUrl: String) =
             DishPictureFragment().apply {
                 arguments = Bundle().apply {
                     putString("picture_url", pictureUrl)
@@ -38,3 +44,4 @@ class DishPictureFragment : Fragment() {
 }
 
  */
+

@@ -12,5 +12,6 @@ class DishPictureAdapter(activity: AppCompatActivity, val pictures: List<String>
     }
 }
 
-
  */
+
+

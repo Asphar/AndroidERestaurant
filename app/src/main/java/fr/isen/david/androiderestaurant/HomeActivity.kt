@@ -46,7 +46,29 @@ class HomeActivity : AppCompatActivity() {
 
         }
 
+        binding.login.setOnClickListener() {
+            val intent = Intent(this, LoginActivity::class.java)
+            Toast.makeText(this, "Login Page", Toast.LENGTH_SHORT).show()
+            intent.putExtra("category_type", getString(R.string.login))
+            startActivity(intent)
+        }
+
+        binding.register.setOnClickListener() {
+            val intent = Intent(this, RegisterActivity::class.java)
+            Toast.makeText(this, "Register Page", Toast.LENGTH_SHORT).show()
+            intent.putExtra("category_type", getString(R.string.register))
+            startActivity(intent)
+        }
+
+        binding.profile.setOnClickListener() {
+            val intent = Intent(this, Profile::class.java)
+            Toast.makeText(this, "Profile Page", Toast.LENGTH_SHORT).show()
+            intent.putExtra("category_type", getString(R.string.profile))
+            startActivity(intent)
+        }
+
     }
+
 
     override fun onStop() {
         super.onStop()
@@ -57,8 +79,4 @@ class HomeActivity : AppCompatActivity() {
         super.onDestroy()
         Log.d("HomeActivity", "HomeActivity has been destroyed");
     }
-
-
-
-
 }
