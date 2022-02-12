@@ -26,12 +26,18 @@ class Activity_detail : AppCompatActivity() {
 
         val detail_image = findViewById<ImageView>(R.id.detailImage)
 
-        Picasso.get()
-            .load(itemDish.images[1])
-            .placeholder(R.drawable.coyote)
-            .error(R.drawable.coyote)
-            .fit()
-            .into(detail_image)
+        if (itemDish.images[0]!="") {
+            Picasso.get()
+                .load(itemDish.images[0])
+                .placeholder(R.drawable.coyote)
+                .error(R.drawable.coyote)
+                .fit()
+                .into(detail_image)
+        }
+
+        else {
+            detail_image.setImageResource(R.drawable.coyote)
+        }
 
 
         val detail_price = findViewById<TextView>(R.id.detailprice)
@@ -40,7 +46,6 @@ class Activity_detail : AppCompatActivity() {
 
         for (index in itemDish.ingredients)
             detail_text.append(index.name_fr + "\n")
-
 
     }
 }

@@ -28,9 +28,16 @@ class Profile : AppCompatActivity(), View.OnClickListener {
             val user = SharedPreferences.getInstance(this).user
 
             id.text = user.id.toString()
+
+            /*
+            userName.text = user.name
             userEmail.text = user.email
             gender.text = user.gender
-            userName.text = user.name
+            */
+
+            userName.text = user.firstname
+            userEmail.text = user.lastname
+            gender.text = user.id
 
             btnLogout.setOnClickListener(this)
 

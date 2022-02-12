@@ -14,6 +14,8 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.HashMap
@@ -28,14 +30,14 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var editTextEmail: EditText
     private lateinit var editTextPassword: EditText
     private lateinit var radioGroupGender: RadioGroup
-    internal lateinit var progressBar: ProgressBar
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         progressBar = findViewById(R.id.progressBar)
 
-        //if the user is already logged in we will directly start the MainActivity (profile) activity
+        // If the user is already logged in we will directly start the profile activity
         if (SharedPreferences.getInstance(this).isLoggedIn) {
             finish()
             startActivity(Intent(this, Profile::class.java))
@@ -54,58 +56,6 @@ class RegisterActivity : AppCompatActivity() {
 
         val textViewLogin = findViewById<TextView>(R.id.textViewLogin)
 
-        /*
-        val test = findViewById<Button>(R.id.test)
-        val textView = findViewById<TextView>(R.id.test1)
-
-
-        // Run volley
-        test.setOnClickListener {
-            val url = "http://test.api.catering.bluecodegames.com/user/register\n"
-            textView.text = ""
-
-            // Post parameters
-            // Form fields and values
-            val params = HashMap<String, String>()
-            params["id_shop"] = "1"
-            params["firstname"] = "isenaeaegaeg"
-            params["lastname"] = "yncreagagega"
-            params["address"] = "12 Pl. des Abattoirs, 13015 Marseille"
-            params["email"] = "somethingalongtheline@gmail.com"
-            params["password"] = "something123456789#"
-
-
-            val jsonObject = JSONObject(params as Map<*, *>?)
-
-            // Volley post request with parameters
-            val request = JsonObjectRequest(
-                Request.Method.POST, url, jsonObject,
-                { response ->
-                    // Process the json
-                    try {
-                        textView.text = "Response: $response"
-                    } catch (e: Exception) {
-                        textView.text = "Exception: $e"
-                    }
-
-                    Log.d("", "$response")
-                }, {
-                    // Error in request
-                    textView.text = "Volley error: $it"
-                })
-
-
-            // Volley request policy, only one time request to avoid duplicate transaction
-            request.retryPolicy = DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                // 0 means no retry
-                0, // DefaultRetryPolicy.DEFAULT_MAX_RETRIES = 2
-                1f // DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-            )
-            VolleySingleton.getInstance(this).addToRequestQueue(request)
-
-        }
-        */
         buttonRegister.setOnClickListener {
             //if user pressed on button register
             //here we will register the user to server
@@ -119,7 +69,7 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("SetTextI18n")
+
     private fun registerUser() {
         // val username = editTextUsername.text.toString().trim { it <= ' ' }
         val firstname = editTextFirstname.text.toString().trim { it <= ' ' }
@@ -130,15 +80,8 @@ class RegisterActivity : AppCompatActivity() {
 
         val gender = (findViewById<View>(radioGroupGender.checkedRadioButtonId) as RadioButton).text.toString()
 
-        //first we will do the validations
-        /*
-        if (TextUtils.isEmpty(username)) {
-            editTextUsername.error = "Please enter username"
-            editTextUsername.requestFocus()
-            return
-        }
-        */
 
+        // Test entries
         if (TextUtils.isEmpty(firstname)) {
             editTextFirstname.error = "Please enter your first name"
             editTextFirstname.requestFocus()
@@ -175,75 +118,56 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
+        // Volley request
+        val queue = Volley.newRequestQueue(this)
+        val url = "http://test.api.catering.bluecodegames.com/user/register"
+        val jsonObject = JSONObject()
 
-        val stringRequest = object : StringRequest(Method.POST, URLs.URL_REGISTER,
-            Response.Listener { response ->
-                progressBar.visibility = View.GONE
+        jsonObject.put("id_shop", "1")
+        jsonObject.put("firstname", firstname)
+        jsonObject.put("lastname", lastname)
+        jsonObject.put("address", address)
+        jsonObject.put("email", email)
+        jsonObject.put("password", password)
 
-                try {
-                    //converting response to json object
-                    val obj = JSONObject(response)
+        val request = JsonObjectRequest(
+            Request.Method.POST, url, jsonObject,
+            { response ->
+                val httpCode = Gson().fromJson(response.toString(), Connection::class.java)
 
-                    //if no error in response
-                    if (!obj.getBoolean("error")) {
-                        Toast.makeText(applicationContext, obj.getString("message"), Toast.LENGTH_SHORT).show()
+                if ( httpCode.code == "200" )  {
 
-                        //getting the user from the response
-                        val userJson = obj.getJSONObject("user")
+                    // Creating a new user object
+                    val user = User(
+                        httpCode.data.id,
+                        httpCode.data.firstname,
+                        httpCode.data.lastname
+                    )
 
-                        //creating a new user object
+                    // Storing the user in shared preferences
+                    SharedPreferences.getInstance(applicationContext).userLogin(user)
 
-                        val user = User(
-                            userJson.getInt("id"),
-                            userJson.getString("username"),
-                            userJson.getString("email"),
-                            userJson.getString("gender")
-                        )
+                    startActivity(Intent(applicationContext, LoginActivity::class.java))
 
-
-                        /*
-                        val user = User(
-                            userJson.getInt("id_shop"),
-                            userJson.getString("firstname"),
-                            userJson.getString("lastname"),
-                            userJson.getString("address"),
-                            userJson.getString("email"),
-                            userJson.getString("password")
-                        )
-
-                        */
-
-                        // Storing the user in shared preferences
-                        SharedPreferences.getInstance(applicationContext).userLogin(user)
-
-                        //starting the MainActivity activity
-                        finish()
-                        startActivity(Intent(applicationContext, Profile::class.java))
-                    } else {
-                        Toast.makeText(applicationContext, obj.getString("message"), Toast.LENGTH_SHORT).show()
-                    }
-                } catch (e: JSONException) {
-                    e.printStackTrace()
+                } else {
+                    Log.e("HTTP ERROR CODE", (httpCode.code))
                 }
-            },
-            Response.ErrorListener { error -> Toast.makeText(applicationContext, error.message, Toast.LENGTH_SHORT).show() }) {
-            @Throws(AuthFailureError::class)
-            override fun getParams(): Map<String, String> {
-                val params = HashMap<String, String>()
-                params["id_shop"] = "1"
-                params["firstname"] = firstname
-                params["lastname"] = lastname
-                params["address"] = address
-                params["email"] = email
-                params["password"] = password
+                Log.d("", "$response")
+            }, {
+                // Error in request
+                Log.i("","Volley error: $it")
 
-                // params["username"] = username
-                // params["email"] = email
-                // params["password"] = password
-                // params["gender"] = gender
-                return params
-            }
-        }
-        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest)
+            })
+
+        // Volley request policy, only one time request to avoid duplicate transaction
+        request.retryPolicy = DefaultRetryPolicy(
+            DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+            // 0 means no retry
+            0, // DefaultRetryPolicy.DEFAULT_MAX_RETRIES = 2
+            1f // DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        )
+        // Add the volley post request to the request queue
+        queue.add(request)
     }
+
 }

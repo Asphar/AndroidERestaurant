@@ -26,8 +26,6 @@ class MenuActivity : AppCompatActivity(), CellClickListener {
         setContentView(binding.root)
 
 
-
-
         var category: String? = ""
         if (intent.hasExtra("category_type")) {
             category = intent.getStringExtra("category_type")
@@ -55,10 +53,11 @@ class MenuActivity : AppCompatActivity(), CellClickListener {
                     displayDishes(
                         dishresult.data.firstOrNull { it.name_fr == category }?.items ?: listOf()
                     )
-                    Log.d("", "$response")
+
+                    Log.d("AWAITING RESPONSE", "$response")
                 }, {
                     // Error in request
-                    Log.i("", "Volley error: $it")
+                    Log.i("AWAITING ERROR", "Volley error: $it")
                 })
 
             // Volley request policy, only one time request to avoid duplicate transaction
@@ -69,6 +68,7 @@ class MenuActivity : AppCompatActivity(), CellClickListener {
                 1f // DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
             )
             // Add the volley post request to the request queue
+            Log.d("### DEBUG jsonObject: ", request.toString())
             queue.add(request)
         }
     }

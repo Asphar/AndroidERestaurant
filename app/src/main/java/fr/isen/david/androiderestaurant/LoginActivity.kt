@@ -6,12 +6,17 @@ import android.os.Bundle
 
 import android.content.Intent
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.*
 import com.android.volley.AuthFailureError
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.HashMap
@@ -19,7 +24,8 @@ import java.util.HashMap
 class LoginActivity : AppCompatActivity() {
     private lateinit var etName: EditText
     private lateinit var etPassword: EditText
-    internal lateinit var progressBar: ProgressBar
+    private lateinit var progressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -52,12 +58,13 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun userLogin() {
-        //first getting the values
-        val username = etName.text.toString()
+        // First getting the values
+        val email = etName.text.toString()
         val password = etPassword.text.toString()
-        //validating inputs
-        if (TextUtils.isEmpty(username)) {
-            etName.error = "Please enter your username"
+
+        // Validating inputs
+        if (TextUtils.isEmpty(email)) {
+            etName.error = "Please enter your email"
             // etName.requestFocus()
             return
         }
@@ -68,8 +75,8 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-
-        //if everything is fine
+        /*
+        // If everything is fine
         val stringRequest = object : StringRequest(Request.Method.POST, URLs.URL_LOGIN,
             Response.Listener { response ->
                 progressBar.visibility = View.GONE
@@ -86,12 +93,25 @@ class LoginActivity : AppCompatActivity() {
                         val userJson = obj.getJSONObject("user")
 
                         //creating a new user object
+
                         val user = User(
                             userJson.getInt("id"),
                             userJson.getString("username"),
                             userJson.getString("email"),
                             userJson.getString("gender")
                         )
+
+                        /*
+                        val user = User(
+                            userJson.getInt("id_shop"),
+                            userJson.getString("firstname"),
+                            userJson.getString("lastname"),
+                            userJson.getString("address"),
+                            userJson.getString("email"),
+                            userJson.getString("gender")
+                        )
+
+                        */
 
                         //storing the user in shared preferences
                         SharedPreferences.getInstance(applicationContext).userLogin(user)
@@ -109,13 +129,69 @@ class LoginActivity : AppCompatActivity() {
             @Throws(AuthFailureError::class)
             override fun getParams(): Map<String, String> {
                 val params = HashMap<String, String>()
+                /*
                 params["username"] = username
+                params["password"] = password
+                */
+                params["id_shop"] = "1"
+                params["email"] = email
                 params["password"] = password
                 return params
             }
         }
-
-
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest)
+        */
+
+        val queue = Volley.newRequestQueue(this)
+        val url = "http://test.api.catering.bluecodegames.com/user/login"
+        val jsonObject = JSONObject()
+
+        jsonObject.put("id_shop", "1")
+        jsonObject.put("email", email)
+        jsonObject.put("password", password)
+
+        val request = JsonObjectRequest(
+            Request.Method.POST, url, jsonObject,
+            { response ->
+
+                val httpCode = Gson().fromJson(response.toString(), Connection::class.java)
+
+                //save user id into shared preferences
+                // (activity as ConnectionActivity)?.saveId(httpanswer.data.id,httpanswer.data.firstname,httpanswer.data.lastname)
+
+                if( httpCode.code == "200" )  {
+                    // Creating a new user object
+                    val user = User(
+                        httpCode.data.id,
+                        httpCode.data.firstname,
+                        httpCode.data.lastname
+                    )
+
+                    // Storing the user in shared preferences
+                    SharedPreferences.getInstance(applicationContext).userLogin(user)
+
+                    startActivity(Intent(applicationContext, Profile::class.java))
+
+                }
+
+
+
+            }, {
+                // Error in request
+                Log.i("","Volley error: $it")
+            })
+
+
+        // Volley request policy, only one time request to avoid duplicate transaction
+        request.retryPolicy = DefaultRetryPolicy(
+            DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+            // 0 means no retry
+            0, // DefaultRetryPolicy.DEFAULT_MAX_RETRIES = 2
+            1f // DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        )
+        // Add the volley post request to the request queue
+        queue.add(request)
+
+
     }
 }

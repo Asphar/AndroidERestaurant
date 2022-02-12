@@ -10,7 +10,7 @@ class SharedPreferences private constructor(context: Context) {
     val isLoggedIn: Boolean
         get() {
             val sharedPreferences = ctx?.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
-            return sharedPreferences?.getString(KEY_USERNAME, null) != null
+            return sharedPreferences?.getString(KEY_FIRSTNAME, null) != null
         }
 
     //this method will give the logged in user
@@ -18,10 +18,9 @@ class SharedPreferences private constructor(context: Context) {
         get() {
             val sharedPreferences = ctx?.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
             return User(
-                sharedPreferences!!.getInt(KEY_ID, -1),
-                sharedPreferences.getString(KEY_USERNAME, null),
-                sharedPreferences.getString(KEY_EMAIL, null),
-                sharedPreferences.getString(KEY_GENDER, null)
+                sharedPreferences!!.getString(KEY_ID, null),
+                sharedPreferences.getString(KEY_FIRSTNAME, null),
+                sharedPreferences.getString(KEY_LASTNAME, null),
             )
         }
 
@@ -33,10 +32,10 @@ class SharedPreferences private constructor(context: Context) {
     fun userLogin(user: User) {
         val sharedPreferences = ctx?.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
         val editor = sharedPreferences?.edit()
-        editor?.putInt(KEY_ID, user.id)
-        editor?.putString(KEY_USERNAME, user.name)
-        editor?.putString(KEY_EMAIL, user.email)
-        editor?.putString(KEY_GENDER, user.gender)
+        editor?.putString(KEY_ID, user.id)
+        editor?.putString(KEY_FIRSTNAME, user.firstname)
+        editor?.putString(KEY_LASTNAME, user.lastname)
+        // editor?.putString(KEY_GENDER, user.gender)
         editor?.apply()
     }
 
@@ -52,9 +51,9 @@ class SharedPreferences private constructor(context: Context) {
     companion object {
 
         private val SHARED_PREF_NAME = "volleyregisterlogin"
-        private val KEY_USERNAME = "keyusername"
-        private val KEY_EMAIL = "keyemail"
-        private val KEY_GENDER = "keygender"
+        private val KEY_FIRSTNAME = "keyusername"
+        private val KEY_LASTNAME = "keyemail"
+        // private val KEY_GENDER = "keygender"
         private val KEY_ID = "keyid"
         private var mInstance: SharedPreferences? = null
         private var ctx: Context? = null
