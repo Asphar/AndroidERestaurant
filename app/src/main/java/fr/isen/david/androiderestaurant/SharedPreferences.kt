@@ -6,14 +6,14 @@ import android.content.Intent
 
 class SharedPreferences private constructor(context: Context) {
 
-    //this method will checker whether user is already logged in or not
+    // This method will check whether user is already logged in or not
     val isLoggedIn: Boolean
         get() {
             val sharedPreferences = ctx?.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
             return sharedPreferences?.getString(KEY_FIRSTNAME, null) != null
         }
 
-    //this method will give the logged in user
+    // This method will give the logged in user
     val user: User
         get() {
             val sharedPreferences = ctx?.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
@@ -28,18 +28,17 @@ class SharedPreferences private constructor(context: Context) {
         ctx = context
     }
 
-    //this method will store the user data in shared preferences
+    // This method will store the user data in shared preferences
     fun userLogin(user: User) {
         val sharedPreferences = ctx?.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
         val editor = sharedPreferences?.edit()
         editor?.putString(KEY_ID, user.id)
         editor?.putString(KEY_FIRSTNAME, user.firstname)
         editor?.putString(KEY_LASTNAME, user.lastname)
-        // editor?.putString(KEY_GENDER, user.gender)
         editor?.apply()
     }
 
-    //this method will logout the user
+    // This method will logout the user
     fun logout() {
         val sharedPreferences = ctx?.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
         val editor = sharedPreferences?.edit()
@@ -53,7 +52,6 @@ class SharedPreferences private constructor(context: Context) {
         private val SHARED_PREF_NAME = "volleyregisterlogin"
         private val KEY_FIRSTNAME = "keyusername"
         private val KEY_LASTNAME = "keyemail"
-        // private val KEY_GENDER = "keygender"
         private val KEY_ID = "keyid"
         private var mInstance: SharedPreferences? = null
         private var ctx: Context? = null

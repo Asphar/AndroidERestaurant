@@ -9,7 +9,7 @@ tools:context=".RegisterActivity">
 
     <LinearLayout
         android:layout_width="389dp"
-        android:layout_height="594dp"
+        android:layout_height="610dp"
         android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -27,7 +27,7 @@ tools:context=".RegisterActivity">
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Register"
+            android:text="@string/register"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
         <EditText
@@ -36,7 +36,7 @@ tools:context=".RegisterActivity">
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:hint="First Name"
+            android:hint="@string/first_name"
             android:inputType="text" />
 
         <EditText
@@ -45,7 +45,7 @@ tools:context=".RegisterActivity">
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:hint="Last Name"
+            android:hint="@string/last_name"
             android:inputType="text" />
 
         <EditText
@@ -54,7 +54,7 @@ tools:context=".RegisterActivity">
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:hint="Address"
+            android:hint="@string/address"
             android:inputType="text" />
 
         <EditText
@@ -63,7 +63,7 @@ tools:context=".RegisterActivity">
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:hint="Email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress" />
 
         <EditText
@@ -73,7 +73,7 @@ tools:context=".RegisterActivity">
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="sans-serif"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword" />
 
         <RadioGroup
@@ -89,14 +89,14 @@ tools:context=".RegisterActivity">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="Male" />
+                android:text="@string/male" />
 
 
             <RadioButton
                 android:id="@+id/radioButtonFemale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Female" />
+                android:text="@string/female" />
 
         </RadioGroup>
 
@@ -106,7 +106,7 @@ tools:context=".RegisterActivity">
             android:layout_height="wrap_content"
             android:layout_marginTop="90dp"
             android:layout_marginBottom="8dp"
-            android:text="Register" />
+            android:text="@string/register" />
 
         <TextView
             android:id="@+id/textViewLogin"
@@ -114,7 +114,7 @@ tools:context=".RegisterActivity">
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="Already Registered?\n\nLogin Here"
+            android:text="@string/already_registered"
             android:textAlignment="center"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
@@ -122,13 +122,13 @@ tools:context=".RegisterActivity">
             android:id="@+id/test"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Test" />
+            android:text="@string/insert_text" />
 
         <TextView
             android:id="@+id/test1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Test" />
+            android:text="@string/insert_text" />
     </LinearLayout>
 
 <ProgressBar

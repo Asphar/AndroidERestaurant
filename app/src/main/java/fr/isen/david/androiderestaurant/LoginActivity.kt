@@ -9,17 +9,12 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.*
-import com.android.volley.AuthFailureError
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import org.json.JSONException
 import org.json.JSONObject
-import java.util.HashMap
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var etName: EditText
@@ -172,6 +167,8 @@ class LoginActivity : AppCompatActivity() {
 
                     startActivity(Intent(applicationContext, Profile::class.java))
 
+                } else {
+                    Toast.makeText(this,"Did you forget your password or email ?",Toast.LENGTH_SHORT).show()
                 }
 
 

@@ -3,17 +3,10 @@ package fr.isen.david.androiderestaurant
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.DefaultRetryPolicy
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
 import fr.isen.david.androiderestaurant.databinding.ActivityHomeBinding
-import org.json.JSONObject
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : HeaderActivity() {
     private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,14 +52,6 @@ class HomeActivity : AppCompatActivity() {
             intent.putExtra("category_type", getString(R.string.register))
             startActivity(intent)
         }
-
-        binding.profile.setOnClickListener() {
-            val intent = Intent(this, Profile::class.java)
-            Toast.makeText(this, "Profile Page", Toast.LENGTH_SHORT).show()
-            intent.putExtra("category_type", getString(R.string.profile))
-            startActivity(intent)
-        }
-
     }
 
 

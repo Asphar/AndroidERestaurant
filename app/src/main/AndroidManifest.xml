@@ -13,6 +13,15 @@
         android:theme="@style/Theme.AndroidERestaurant"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".OrderTaken"
+            android:exported="false" />
+        <activity
+            android:name=".CommandSuccessful"
+            android:exported="false" />
+        <activity
+            android:name=".BasketActivity"
+            android:exported="false" />
+        <activity
             android:name=".Profile"
             android:exported="false" />
         <activity
@@ -22,7 +31,7 @@
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity_detail"
+            android:name=".ActivityDetail"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"

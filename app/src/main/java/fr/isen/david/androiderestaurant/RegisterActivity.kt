@@ -1,6 +1,5 @@
 package fr.isen.david.androiderestaurant
 
-import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
@@ -8,17 +7,12 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.*
-import com.android.volley.AuthFailureError
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import org.json.JSONException
 import org.json.JSONObject
-import java.util.HashMap
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -150,6 +144,7 @@ class RegisterActivity : AppCompatActivity() {
                     startActivity(Intent(applicationContext, LoginActivity::class.java))
 
                 } else {
+                    Toast.makeText(this,"ERROR 400 : Failed to create an account",Toast.LENGTH_SHORT).show()
                     Log.e("HTTP ERROR CODE", (httpCode.code))
                 }
                 Log.d("", "$response")

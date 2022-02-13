@@ -16,7 +16,7 @@ import fr.isen.david.androiderestaurant.databinding.ActivityMenuBinding
 import org.json.JSONObject
 
 
-class MenuActivity : AppCompatActivity(), CellClickListener {
+class MenuActivity : HeaderActivity(), CellClickListener {
 
     private lateinit var binding: ActivityMenuBinding
 
@@ -35,43 +35,42 @@ class MenuActivity : AppCompatActivity(), CellClickListener {
         textViewCategory.setText(category)
 
 
-        val btn = findViewById<Button>(R.id.button4)
-        btn.setOnClickListener {
-            //http request to the API
-            val queue = Volley.newRequestQueue(this)
-            val url = "http://test.api.catering.bluecodegames.com/menu"
-            val jsonObject = JSONObject()
-            jsonObject.put("id_shop", "1")
 
-            // Request a string response from the provided URL.
-            val request = JsonObjectRequest(
-                Request.Method.POST, url, jsonObject,
-                { response ->
+        //http request to the API
+        val queue = Volley.newRequestQueue(this)
+        val url = "http://test.api.catering.bluecodegames.com/menu"
+        val jsonObject = JSONObject()
+        jsonObject.put("id_shop", "1")
 
-                    var gson = Gson()
-                    var dishresult = gson.fromJson(response.toString(), DishResult::class.java)
-                    displayDishes(
-                        dishresult.data.firstOrNull { it.name_fr == category }?.items ?: listOf()
-                    )
+        // Request a string response from the provided URL.
+        val request = JsonObjectRequest(
+            Request.Method.POST, url, jsonObject,
+            { response ->
 
-                    Log.d("AWAITING RESPONSE", "$response")
-                }, {
-                    // Error in request
-                    Log.i("AWAITING ERROR", "Volley error: $it")
-                })
+                var gson = Gson()
+                var dishresult = gson.fromJson(response.toString(), DishResult::class.java)
+                displayDishes(
+                    dishresult.data.firstOrNull { it.name_fr == category }?.items ?: listOf()
+                )
 
-            // Volley request policy, only one time request to avoid duplicate transaction
-            request.retryPolicy = DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                // 0 means no retry
-                0, // DefaultRetryPolicy.DEFAULT_MAX_RETRIES = 2
-                1f // DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-            )
-            // Add the volley post request to the request queue
-            Log.d("### DEBUG jsonObject: ", request.toString())
-            queue.add(request)
-        }
+                Log.d("AWAITING RESPONSE", "$response")
+            }, {
+                // Error in request
+                Log.i("AWAITING ERROR", "Volley error: $it")
+            })
+
+        // Volley request policy, only one time request to avoid duplicate transaction
+        request.retryPolicy = DefaultRetryPolicy(
+            DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+            // 0 means no retry
+            0, // DefaultRetryPolicy.DEFAULT_MAX_RETRIES = 2
+            1f // DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        )
+        // Add the volley post request to the request queue
+        Log.d("### DEBUG jsonObject: ", request.toString())
+        queue.add(request)
     }
+
 
     private fun displayDishes (dishresult: List<DishModel>){
         // Getting the recyclerview by its id
@@ -90,9 +89,13 @@ class MenuActivity : AppCompatActivity(), CellClickListener {
 
 
     override fun onCellClickListener(data: DishModel) {
-        val monIntent : Intent =  Intent(this, Activity_detail::class.java)
+        val monIntent : Intent =  Intent(this, ActivityDetail::class.java)
         monIntent.putExtra("itemDish", data)
         startActivity(monIntent)
+    }
+
+    override fun onCellClickListenerBasket(data: DishBasket) {
+        TODO("Not yet implemented")
     }
 }
 

@@ -1,11 +1,65 @@
 <resources>
-    <string name="app_name">AndroidERestaurant</string>
+    <!-- Titre application -->
+    <string name="app_name">AndroidERestaurantDavid</string>
+
+    <!-- Activités -->
+    <string name="restaurant">Image ressource</string>
+    <string name="account_creation">Create New Account\n\n Register Here</string>
+    <string name="home">Welcome\n to</string>
+    <string name="profile_page">Welcome to Profile</string>
+    <string name="already_registered">Already Registered?\n\nLogin Here</string>
+
+    <!-- Menu -->
     <string name="entrees">Entrées</string>
     <string name="plats">Plats</string>
     <string name="desserts">Desserts</string>
+    <string name="appetizer">Appetizer</string>
+    <string name="dessert">Dessert</string>
+    <string name="main_course">Main course</string>
+
+    <!-- Compte -->
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="profile">Profile</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
+
+    <!-- Information utilisateur -->
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="address">Address</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="userlastname">userlastname</string>
+    <string name="userfirstname">userfirstname</string>
+    <string name="surname">Surname</string>
+    <string name="name">Name</string>
+    <string name="id">id</string>
+
+
+    <!-- Ressource image -->
+    <string name="minus">Minus button</string>
+    <string name="plus">Plus button</string>
+    <string name="order">Commander</string>
+    <string name="price">Price</string>
+    <string name="dish_name">Dish name</string>
+    <string name="item">Item</string>
+
+
+    <!-- Panier -->
+    <string name="userTitle">Coyote</string>
+    <string name="quantity">Quantité</string>
+    <string name="BasketTitle">Panier</string>
+
+
+    <!-- Fragment -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- Insertion -->
+    <string name="insert_text">Here is my text</string>
+    <string name="textview">TextView</string>
+
+
 </resources>

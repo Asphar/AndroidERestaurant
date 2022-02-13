@@ -11,10 +11,10 @@ import com.squareup.picasso.Picasso
 class CustomAdapter(private val mList: List<DishModel>, private val cellClickListener : CellClickListener) : RecyclerView.Adapter<CustomAdapter.ViewHolder>(){
 
 
-    // create new views
+    // Create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // inflates the card_view_design view
-        // that is used to hold list item
+
+        // Inflates the card_view_design view that is used to hold list item
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.card_view_design, parent, false)
 
@@ -38,8 +38,8 @@ class CustomAdapter(private val mList: List<DishModel>, private val cellClickLis
         }
 
         holder.itemText.text = dish.name_fr
-        // holder.itemprice.text = dish.prices[0].price+"€"
-
+        holder.itemprice.text = dish.prices[0].price+"€"
+        holder.bin.visibility = View.INVISIBLE
 
         val data = mList[position]
         holder.itemView.setOnClickListener {
@@ -48,7 +48,7 @@ class CustomAdapter(private val mList: List<DishModel>, private val cellClickLis
 
     }
 
-    // return the number of the items in the list
+    // Return the number of the items in the list
     override fun getItemCount(): Int {
         return mList.size
     }
@@ -57,7 +57,8 @@ class CustomAdapter(private val mList: List<DishModel>, private val cellClickLis
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val itemImage: ImageView = itemView.findViewById(R.id.imageview)
         val itemText: TextView = itemView.findViewById(R.id.textView)
-        // val itemprice: TextView = itemView.findViewById(R.id.price)
+        val itemprice: TextView = itemView.findViewById(R.id.price)
+        val bin: ImageView = itemView.findViewById(R.id.bin)
 
     }
 }

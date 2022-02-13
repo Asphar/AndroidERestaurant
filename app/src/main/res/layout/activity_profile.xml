@@ -25,7 +25,7 @@ tools:context=".Profile">
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Welcome to Profile"
+        android:text="@string/profile_page"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
     <TableLayout
@@ -40,7 +40,7 @@ tools:context=".Profile">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="Id"
+                android:text="@string/id"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
             <TextView
@@ -48,7 +48,7 @@ tools:context=".Profile">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="id"
+                android:text="@string/id"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
         </TableRow>
@@ -59,7 +59,7 @@ tools:context=".Profile">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="Username"
+                android:text="@string/name"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
             <TextView
@@ -67,7 +67,7 @@ tools:context=".Profile">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="username"
+                android:text="@string/userfirstname"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
         </TableRow>
@@ -78,7 +78,7 @@ tools:context=".Profile">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="Email"
+                android:text="@string/surname"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
             <TextView
@@ -86,29 +86,12 @@ tools:context=".Profile">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="useremail"
+                android:text="@string/userlastname"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
         </TableRow>
 
-        <TableRow>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Gender"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
-
-            <TextView
-                android:id="@+id/textViewGender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="gender"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
-
-        </TableRow>
+        <TableRow/>
 
 
     </TableLayout>
@@ -117,8 +100,8 @@ tools:context=".Profile">
         android:id="@+id/buttonLogout"
         android:layout_width="210dp"
         android:layout_height="50dp"
+        android:layout_marginLeft="94dp"
         android:layout_marginTop="150dp"
-        android:layout_marginLeft="75dp"
         android:text="Logout" />
 </LinearLayout>
 
